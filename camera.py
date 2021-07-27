@@ -1,5 +1,5 @@
-# Created by smartbuilds.io
-# Modified by Daniel Park
+# Original Author: smartbuilds.io
+# Modified: Daniel Park
 # Date: 7.12.21
 # Desc: This scrtipt is running a face recongition of a live webcam stream.
 
@@ -11,35 +11,33 @@ face_cascade=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 ds_factor=0.6
 
 #Store objects in array
-known_person=[] #Name of person string
-known_image=[] #Image object
-known_face_encodings=[] #Encoding object
+known_person=[] # Name of person string
+known_image=[] # Image object
+known_face_encodings=[] # Encoding object
 
 # Initialize some variables
-face_locations = []
-face_encodings = []
-face_names = []
+face_locations = [] # Face locations Coordinates
+face_encodings = [] # Face Encodings
+face_names = [] # Face Associated with Name
 process_this_frame = True
 
-#Loop to add images in friends folder
+# Add images to the folder
 for file in os.listdir("people"):
     try:
-        #Extracting person name from the image filename eg: david.jpg
         known_person.append(file.replace(".jpg", ""))
         file=os.path.join("people/", file)
         known_image = face_recognition.load_image_file(file)
-        #print("test")
-        #print(face_recognition.face_encodings(known_image)[0])
+        print(face_recognition.face_encodings(known_image)[0])
         known_face_encodings.append(face_recognition.face_encodings(known_image)[0])
-        #print(known_face_encodings)
+        print(known_face_encodings)
 
     except Exception as e:
         pass
-    
-#print(len(known_face_encodings))
+
 print(known_person)
 
 
+# Create Video Camera Object to open camera and detect faces
 class VideoCamera(object):
     def __init__(self):
         self.video = cv2.VideoCapture(0)
@@ -52,7 +50,7 @@ class VideoCamera(object):
         
         process_this_frame = True
         
-            # Resize frame of video to 1/4 size for faster face recognition processing
+        # Resize frame of video to 1/4 size for faster face recognition processing
         small_frame = cv2.resize(image, (0, 0), fx=0.25, fy=0.25)
 
         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
@@ -65,13 +63,11 @@ class VideoCamera(object):
             face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 
             global name_gui;
-            #face_names = []
             for face_encoding in face_encodings:
                 # See if the face is a match for the known face(s)
                 matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
                 name = "Unknown"
                 
-                #print(face_encoding)
                 print(matches)
 
                 face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
@@ -80,7 +76,6 @@ class VideoCamera(object):
                     name = known_person[best_match_index]
 
                 print(name)
-                #print(face_locations)
                 face_names.append(name)
         
                 name_gui = name
