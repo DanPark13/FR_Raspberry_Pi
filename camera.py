@@ -22,14 +22,12 @@ face_names = [] # Face Associated with Name
 process_this_frame = True
 
 # Add images to the folder
-for file in os.listdir("people"):
+for file in os.listdir("picture_ids"):
     try:
         known_person.append(file.replace(".jpg", ""))
-        file=os.path.join("people/", file)
+        file=os.path.join("picture_ids/", file)
         known_image = face_recognition.load_image_file(file)
-        print(face_recognition.face_encodings(known_image)[0])
         known_face_encodings.append(face_recognition.face_encodings(known_image)[0])
-        print(known_face_encodings)
 
     except Exception as e:
         pass
@@ -41,21 +39,21 @@ print(known_person)
 class VideoCamera(object):
     def __init__(self):
         self.video = cv2.VideoCapture(0)
-    
+
     def __del__(self):
         self.video.release()
-    
+
     def get_frame(self):
         success, image = self.video.read()
-        
+
         process_this_frame = True
-        
+
         # Resize frame of video to 1/4 size for faster face recognition processing
         small_frame = cv2.resize(image, (0, 0), fx=0.25, fy=0.25)
 
         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
         rgb_small_frame = small_frame[:, :, ::-1]
-        
+
        # Only process every other frame of video to save time
         if process_this_frame:
             # Find all the faces and face encodings in the current frame of video
@@ -91,12 +89,12 @@ class VideoCamera(object):
             left *= 4
 
             # Draw a box around the face
-            cv2.rectangle(image, (left, top), (right, bottom), (255, 255, 255), 2)
+            cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
 
             # Draw a label with a name below the face
-            cv2.rectangle(image, (left, bottom - 35), (right, bottom), (255, 255, 255), cv2.FILLED)
+            cv2.rectangle(image, (left, bottom - 35), (right, bottom), (0, 255, 0), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(image, name_gui, (left + 10, bottom - 10), font, 1.0, (0, 0, 0), 1)
+            cv2.putText(image, name_gui, (left + 10, bottom - 10), font, 1, (0, 0, 0), 1)
 
         
         ret, jpeg = cv2.imencode('.jpg', image)
