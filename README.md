@@ -9,5 +9,5 @@
 
 ## Credits:
 
-Facial Recognition Library Code Author: Adam Geitgey
-Flask Webstream Code Author: Eben Kouao
+- Facial Recognition Library Code Author: Adam Geitgey
+- Flask Webstream Code Author: Eben Kouao
