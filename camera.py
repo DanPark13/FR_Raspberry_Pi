@@ -7,11 +7,12 @@ import face_recognition
 import cv2
 import numpy as np
 import os
+import re
 face_cascade=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 ds_factor=0.6
 
 #Store objects in array
-known_person=[] # Name of person string
+known_person=[] # List of name of people
 known_image=[] # Image object
 known_face_encodings=[] # Encoding object
 
@@ -74,9 +75,15 @@ class VideoCamera(object):
                     name = known_person[best_match_index]
 
                 print(name)
+                
+                name_code = name.split("_")
+                full_name = re.sub("([A-Z])"," \\1", name_code[0]).strip()
+                #code = name_code[1]
+                print(full_name)
+                
                 face_names.append(name)
         
-                name_gui = name
+                name_gui = full_name
 
         process_this_frame = not process_this_frame
             
@@ -94,8 +101,8 @@ class VideoCamera(object):
             # Draw a label with a name below the face
             cv2.rectangle(image, (left, bottom - 35), (right, bottom), (0, 255, 0), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(image, name_gui, (left + 10, bottom - 10), font, 1, (0, 0, 0), 1)
+            cv2.putText(image, f"Name: {name_gui}", (left + 10, bottom - 10), font, 1, (0, 0, 0), 1)
 
-        
+
         ret, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()
