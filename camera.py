@@ -22,11 +22,11 @@ face_names = []
 process_this_frame = True
 
 #Loop to add images in friends folder
-for file in os.listdir("profiles"):
+for file in os.listdir("people"):
     try:
         #Extracting person name from the image filename eg: david.jpg
         known_person.append(file.replace(".jpg", ""))
-        file=os.path.join("profiles/", file)
+        file=os.path.join("people/", file)
         known_image = face_recognition.load_image_file(file)
         #print("test")
         #print(face_recognition.face_encodings(known_image)[0])
