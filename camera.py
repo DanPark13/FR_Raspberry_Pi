@@ -8,10 +8,11 @@ import cv2
 import numpy as np
 import os
 import re
+from datetime import datetime
 face_cascade=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 ds_factor=0.6
 
-#Store objects in array
+# Store objects in array
 known_person=[] # List of name of people
 known_image=[] # Image object
 known_face_encodings=[] # Encoding object
@@ -34,6 +35,32 @@ for file in os.listdir("picture_ids"):
         pass
 
 print(known_person)
+
+def mark_attendance(person_name):
+    """
+    Write the person's name down in the attendance sheet when identified on webcam
+    
+    Args:
+        (String) person_name: person's name
+    
+    Returns:
+        N/A
+    """
+    with open("attendance_sheet.csv", "r+") as sheet:
+        current_data_list = sheet.readlines()
+        name_list = []
+        
+        # Create a new entry
+        for line in current_data_list:
+            entry = line.split(",")
+            name_list.append(entry[0])
+            
+        # If person detected is not in the attendance sheet, mark them in the sheet
+        if person_name not in name_list:
+            time_now = datetime.now()
+            date = time_now.strftime("%x")
+            time = time_now.strftime("%H:%M:%S")
+            sheet.writelines(f"\n{person_name},{date},{time}")
 
 
 # Create Video Camera Object to open camera and detect faces
@@ -100,11 +127,13 @@ class VideoCamera(object):
             # Draw a box around the face
             cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
 
-            # Draw a label with a name below the face
+            # Draw a label with a name and code below the face
             cv2.rectangle(image, (left, bottom - 35), (right, bottom), (0, 255, 0), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(image, f"Name: {name_gui}", (left + 10, bottom - 10), font, 1, (0, 0, 0), 1)
             cv2.putText(image, f"Code: {code_gui}", (left + 10, bottom + 20), font, 1, (0, 0, 0), 1)
+            
+            mark_attendance(name_gui)
 
 
         ret, jpeg = cv2.imencode('.jpg', image)
