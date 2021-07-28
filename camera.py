@@ -61,7 +61,7 @@ class VideoCamera(object):
             face_locations = face_recognition.face_locations(rgb_small_frame)
             face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 
-            global name_gui;
+            global name_gui, code_gui;
             for face_encoding in face_encodings:
                 # See if the face is a match for the known face(s)
                 matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
@@ -73,17 +73,19 @@ class VideoCamera(object):
                 best_match_index = np.argmin(face_distances)
                 if matches[best_match_index]:
                     name = known_person[best_match_index]
-
-                print(name)
                 
                 name_code = name.split("_")
                 full_name = re.sub("([A-Z])"," \\1", name_code[0]).strip()
-                #code = name_code[1]
-                print(full_name)
+                code = "N/A"
+                print(name_code)
+                
+                if(name!="Unknown"):
+                    code = name_code[1]
                 
                 face_names.append(name)
         
                 name_gui = full_name
+                code_gui = code
 
         process_this_frame = not process_this_frame
             
@@ -102,6 +104,7 @@ class VideoCamera(object):
             cv2.rectangle(image, (left, bottom - 35), (right, bottom), (0, 255, 0), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(image, f"Name: {name_gui}", (left + 10, bottom - 10), font, 1, (0, 0, 0), 1)
+            cv2.putText(image, f"Code: {code_gui}", (left + 10, bottom + 20), font, 1, (0, 0, 0), 1)
 
 
         ret, jpeg = cv2.imencode('.jpg', image)
