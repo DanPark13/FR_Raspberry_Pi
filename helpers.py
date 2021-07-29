@@ -6,7 +6,7 @@ from datetime import datetime
 import itertools
 import operator
 
-def most_common(frequency_list):
+def most_common(L):
 	"""
 	Gets the most common element in a list
 	

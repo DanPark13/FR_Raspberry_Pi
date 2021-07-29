@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 import os
 import re
-from helpers import mark_attendance
+from helpers import most_common, mark_attendance
 face_cascade=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 ds_factor=0.6
 
