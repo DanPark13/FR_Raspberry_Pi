@@ -40,9 +40,13 @@ print(known_person)
 class VideoCamera(object):
     def __init__(self):
         self.video = cv2.VideoCapture(0)
+    
+    print("Initializing Camera...")
 
     def __del__(self):
         self.video.release()
+    
+    print("Success, Please hold on...")
 
     def get_frame(self):
         success, image = self.video.read()
@@ -103,8 +107,8 @@ class VideoCamera(object):
             # Draw a label with a name and code below the face
             cv2.rectangle(image, (left, bottom - 35), (right, bottom), (0, 255, 0), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(image, f"Name: {name_gui}", (left + 10, bottom - 10), font, 1, (0, 0, 0), 1)
-            cv2.putText(image, f"Code: {code_gui}", (left + 10, bottom + 20), font, 1, (0, 0, 0), 1)
+            cv2.putText(image, f"Name: {name_gui}", (left + 10, bottom - 10), font, 1, (255, 255, 255), 1)
+            cv2.putText(image, f"Code: {code_gui}", (left + 10, bottom + 20), font, 1, (255, 255, 255), 1)
             
             mark_attendance(name_gui)
 
