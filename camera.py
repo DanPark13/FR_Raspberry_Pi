@@ -1,7 +1,4 @@
-# Original Author: smartbuilds.io
-# Modified: Daniel Park
-# Date: 7.12.21
-# Desc: This script is running a face recongition of a live webcam stream.
+# This script is running a face recongition of a live webcam stream.
 
 import face_recognition
 import cv2
@@ -73,11 +70,14 @@ class VideoCamera(object):
                 
                 print(matches)
 
+                # Get the distances between the known face encodings and the current encodings
                 face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+                # Find a match
                 best_match_index = np.argmin(face_distances)
                 if matches[best_match_index]:
                     name = known_person[best_match_index]
                 
+                # Split the file names by name and code
                 name_code = name.split("_")
                 full_name = re.sub("([A-Z])"," \\1", name_code[0]).strip()
                 code = "N/A"

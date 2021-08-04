@@ -1,22 +1,11 @@
-# Original Author: Daniel park
-# Date: 7.12.21
-# Desc: Helper functions used in processing main and camera
+# Helper functions used in processing main and camera
 
 from datetime import datetime
 import itertools
 import operator
 
+# Gets the most common element in a list
 def most_common(L):
-	"""
-	Gets the most common element in a list
-	
-	Args:
-		(list) frequency_list: list of the five name_codes detected when iterating
-	
-	Returns:
-		The most frequent element in the list
-
-	"""
 	# get an iterable of (item, iterable) pairs
 	SL = sorted((x, i) for i, x in enumerate(L))
 	# print 'SL:', SL
@@ -34,16 +23,8 @@ def most_common(L):
 	# pick the highest-count/earliest item
 	return max(groups, key=_auxfun)[0]
 
+# Write the person's name down in the attendance sheet when identified on webcam
 def mark_attendance(person_name):
-    """
-    Write the person's name down in the attendance sheet when identified on webcam
-    
-    Args:
-        (String) person_name: person's name
-    
-    Returns:
-        N/A
-    """
     with open("attendance_sheet.csv", "r+") as sheet:
         current_data_list = sheet.readlines()
         name_list = []
