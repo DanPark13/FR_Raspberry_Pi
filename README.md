@@ -1,4 +1,4 @@
-# Raspbery Pi Facial Recognition Camera\
+# Raspbery Pi Facial Recognition Camera
 
 ## Instructions for Pi Use:
 
@@ -19,4 +19,4 @@
 
 ## Credits:
 
-- Facial Recognition Library Code Author: Adam Geitgey
+Facial Recognition Library Code Author: Adam Geitgey
